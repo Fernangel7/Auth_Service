@@ -1,3 +1,4 @@
 module.exports = {
-    PORT
+    PORT,
+    MONGODB_URI
 } = process.env;

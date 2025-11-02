@@ -1,0 +1,418 @@
+<style>
+    /* --- Configuración Global y Fondo --- */
+    :root {
+        --primary-blue: #4d4dff;
+        --primary-purple: #6f00ff;
+        --dark-bg: #0a051a;
+        --glass-bg: rgba(15, 10, 30, 0.7);
+        --text-primary: #f0f0f0;
+        --text-secondary: rgba(240, 240, 240, 0.7);
+    }
+
+    body {
+        font-family: 'Exo 2', sans-serif;
+        background: radial-gradient(ellipse at bottom, var(--dark-bg) 0%, #1a0a3a 50%, #2a0d5a 100%);
+        background-color: var(--dark-bg);
+        color: var(--text-primary);
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        overflow: hidden;
+        margin: 0;
+    }
+
+    /* --- Contenedor Principal del Dashboard --- */
+    .dashboard-container {
+        width: 90vw;
+        height: 90vh;
+        display: flex;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--primary-blue);
+        border-radius: 15px;
+        box-shadow: 0 0 30px rgba(77, 77, 255, 0.5);
+        overflow: hidden;
+    }
+
+    /* --- Barra Lateral y Perfil --- */
+    .sidebar {
+        flex-basis: 22%;
+        padding: 2rem 1.5rem;
+        border-right: 1px solid rgba(77, 77, 255, 0.3);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .profile-section {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .profile-section img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 3px solid var(--primary-blue);
+        box-shadow: 0 0 15px var(--primary-blue);
+        margin-bottom: 1rem;
+    }
+
+    /* --- ESTILOS ELIMINADOS --- */
+    /* Se eliminó .nav-menu .nav-button */
+
+
+    /* --- Contenido Principal y Tarjetas de Servicio --- */
+    .main-content {
+        flex-basis: 78%;
+        padding: 2rem 3rem;
+        overflow-y: auto;
+    }
+
+    /* --- NUEVO ESTILO: Cabecera Principal --- */
+    .main-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem; /* Espacio antes de la lista */
+    }
+
+    .main-header h2 {
+        margin: 0;
+        color: var(--text-primary);
+        font-weight: 400;
+        border-bottom: 1px solid var(--primary-purple);
+        padding-bottom: 0.5rem;
+    }
+
+    /* --- NUEVO ESTILO: Botón en la cabecera --- */
+    .main-header .nav-button {
+        padding: 10px 16px;
+        border: none;
+        border-radius: 5px;
+        background: var(--primary-blue);
+        color: white;
+        font-size: 0.9rem; /* Un poco más pequeño para la cabecera */
+        font-weight: 700;
+        font-family: 'Exo 2', sans-serif;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .main-header .nav-button:hover {
+        background: var(--primary-purple);
+        box-shadow: 0 0 15px var(--primary-purple);
+    }
+
+    /* --- NUEVO ESTILO: Mensaje de "No hay servicios" --- */
+    .no-services-msg {
+        display: none; /* Oculto por defecto */
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        padding: 3rem 0;
+    }
+
+    /* ... (El resto de estilos de .service-card, .modal, etc., son iguales) ... */
+
+    /* Tarjeta de Servicio Individual */
+    .service-card {
+        background: rgba(25, 15, 40, 0.8); /* Vidrio más oscuro */
+        border: 1px solid var(--primary-purple);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+        
+        /* Animación de entrada */
+        opacity: 1;
+        transform: scale(1);
+        animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .service-card:hover {
+        box-shadow: 0 0 15px rgba(111, 0, 255, 0.5);
+        transform: translateY(-3px);
+    }
+
+    .service-info h4 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.2rem;
+        color: var(--text-primary);
+    }
+
+    .status {
+        font-size: 0.8rem;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-weight: 700;
+    }
+
+    .status.active {
+        background: rgba(0, 204, 102, 0.2);
+        color: #00cc66;
+    }
+
+    .status.inactive {
+        background: rgba(255, 59, 48, 0.2);
+        color: #ff3b30;
+    }
+
+    .action-btn {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        font-family: 'Exo 2', sans-serif;
+        cursor: pointer;
+        font-weight: 700;
+        margin-left: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .action-btn.modify-btn {
+        background: var(--primary-blue);
+        color: white;
+    }
+    .action-btn.modify-btn:hover {
+        background: #6666ff;
+    }
+
+    .action-btn.delete-btn {
+        background: transparent;
+        border: 1px solid #ff3b30;
+        color: #ff3b30;
+    }
+    .action-btn.delete-btn:hover {
+        background: #ff3b30;
+        color: white;
+    }
+
+    /* --- Estilos del Modal (Añadir Servicio) --- */
+    .modal {
+        display: none; /* Oculto por JS */
+        position: fixed;
+        z-index: 100;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(5px);
+        justify-content: center;
+        align-items: center;
+        animation: fadeInModal 0.3s;
+    }
+
+    @keyframes fadeInModal {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .modal-content {
+        background: #1a0a3a;
+        padding: 2rem 3rem;
+        border-radius: 10px;
+        border: 1px solid var(--primary-blue);
+        box-shadow: 0 0 30px var(--primary-blue);
+        min-width: 350px;
+        position: relative;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        color: var(--text-secondary);
+        font-size: 2rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .close-btn:hover {
+        color: var(--text-primary);
+    }
+
+    .available-services-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 2rem;
+    }
+
+    .available-services-list li {
+        padding: 12px 15px;
+        margin-bottom: 0.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 5px;
+        border-left: 3px solid var(--primary-purple);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .available-services-list li:hover {
+        background: var(--primary-blue);
+        color: white;
+        transform: translateX(5px);
+    }
+</style>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <aside class="sidebar">
+            <div class="profile-section">
+                <img src="./img/ktdi.jpeg" alt="Avatar">
+                <h3>Angel_Agent</h3>
+                <p>ID: 8A-113N</p>
+            </div>
+            
+            </aside>
+
+        <main class="main-content">
+            
+            <div class="main-header">
+                <h2>Servicios Vinculados</h2>
+                <button id="add-service-btn" class="nav-button">
+                    Añadir Servicio
+                </button>
+            </div>
+            
+            <div id="service-list">
+                <p id="no-services-msg" class="no-services-msg">
+                    No hay servicios registrados
+                </p>
+            </div>
+        </main>
+
+    </div>
+
+    <div id="add-service-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Añadir Nuevo Servicio</h3>
+            
+            <ul class="available-services-list">
+                <li>Camera Auth</li>
+                <li>API Gateway</li>
+                <li>Cloud Storage</li>
+                <li>Motor de Inferencia</li>
+                <li>Otros</li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- Referencias del DOM ---
+        const addServiceBtn = document.getElementById('add-service-btn');
+        const modal = document.getElementById('add-service-modal');
+        const closeModalBtn = modal.querySelector('.close-btn');
+        const serviceList = document.getElementById('service-list');
+        const availableServices = modal.querySelector('.available-services-list');
+        
+        // CAMBIO 1: Referencia al nuevo mensaje
+        const noServicesMsg = document.getElementById('no-services-msg');
+
+        // --- CAMBIO 2: Función para mostrar/ocultar el mensaje ---
+        function updateServiceListState() {
+            const services = serviceList.querySelectorAll('.service-card');
+            if (services.length === 0) {
+                noServicesMsg.style.display = 'block';
+            } else {
+                noServicesMsg.style.display = 'none';
+            }
+        }
+
+        // --- Lógica del Modal ---
+        addServiceBtn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // --- Lógica de Servicios (Modificar, Eliminar) ---
+        function deleteService(e) {
+            const card = e.target.closest('.service-card');
+            card.style.transition = 'opacity 0.4s ease, transform 0.4s ease, height 0.4s ease, margin 0.4s, padding 0.4s';
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.9)';
+            card.style.height = '0px';
+            card.style.margin = '0';
+            card.style.padding = '0';
+
+            setTimeout(() => {
+                card.remove();
+                updateServiceListState(); // CAMBIO 3: Actualizar al eliminar
+            }, 400);
+        }
+
+        function modifyService(e) {
+            const card = e.target.closest('.service-card');
+            const serviceName = card.querySelector('h4').textContent;
+            const newName = prompt(`Modificar el nombre de: "${serviceName}"`, serviceName);
+            
+            if (newName && newName.trim() !== "") {
+                card.querySelector('h4').textContent = newName.trim();
+            }
+        }
+
+        function addListenersToCard(card) {
+            card.querySelector('.delete-btn').addEventListener('click', deleteService);
+            card.querySelector('.modify-btn').addEventListener('click', modifyService);
+        }
+
+        // --- Lógica para Añadir un Nuevo Servicio desde el Modal ---
+        availableServices.addEventListener('click', (e) => {
+            if (e.target.tagName === 'LI') {
+                const serviceName = e.target.textContent;
+                
+                const newCard = document.createElement('div');
+                newCard.classList.add('service-card');
+                
+                newCard.innerHTML = `
+                    <div class="service-info">
+                        <h4>${serviceName}</h4>
+                        <span class="status inactive">Pending</span>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn modify-btn">Modificar</button>
+                        <button class="action-btn delete-btn">Eliminar</button>
+                    </div>
+                `;
+
+                serviceList.appendChild(newCard);
+                addListenersToCard(newCard);
+                modal.style.display = 'none';
+
+                updateServiceListState(); // CAMBIO 4: Actualizar al añadir
+            }
+        });
+
+        // --- CAMBIO 5: Comprobar el estado inicial al cargar la página ---
+        updateServiceListState();
+    });
+</script>

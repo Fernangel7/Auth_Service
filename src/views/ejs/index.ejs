@@ -146,10 +146,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESP Camera</title>
+    <title><%= title %>></title>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
+    <input type="hidden" id="hidden_title" value="<%= title %>">
 
     <div class="login-container">
         <form id="login-form">
@@ -175,61 +177,62 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-    const form = document.getElementById('login-form');
-    const button = document.getElementById('login-button');
-    const title = document.getElementById('form-title');
-    
-    // --- Animación 1: Título con "Efecto Máquina de Escribir" ---
-    const titleText = "ESP Camera";
-    let i = 0;
-    title.innerText = ""; // Limpiamos el texto inicial
+        const form = document.getElementById('login-form');
+        const button = document.getElementById('login-button');
+        const title = document.getElementById('form-title');
+        
+        // --- Animación 1: Título con "Efecto Máquina de Escribir" ---
+        const h_title = document.getElementById('hidden_title').value
+        const titleText = h_title;
+        let i = 0;
+        title.innerText = ""; // Limpiamos el texto inicial
 
-    function typeWriter() {
-        if (i < titleText.length) {
-            title.innerText += titleText.charAt(i);
-            i++;
-            setTimeout(typeWriter, 90); // Velocidad de escritura
-        } else {
-            // Cuando termina, añade el cursor parpadeante
-            title.style.borderRight = '2px solid #4d4dff';
-            title.classList.add('typing-done');
-        }
-    }
-    
-    typeWriter(); // Inicia la animación de escritura
-
-    // --- Animación 2: Estado de Carga del Botón ---
-    form.addEventListener('submit', (e) => {
-        e.preventDefault(); // Previene el envío real para esta demo
-        
-        // Desactiva el botón y muestra "cargando"
-        button.disabled = true;
-        button.classList.add('loading');
-        
-        // Simulación de los pasos de una IA
-        let loadingStep = 0;
-        const steps = ["Analyzing...", "Verifying...", "Authenticating..."];
-        
-        const loadingInterval = setInterval(() => {
-            if (loadingStep < steps.length) {
-                button.innerText = steps[loadingStep];
-                loadingStep++;
+        function typeWriter() {
+            if (i < titleText.length) {
+                title.innerText += titleText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 90); // Velocidad de escritura
             } else {
-                clearInterval(loadingInterval);
-                
-                // Simulación de éxito
-                button.innerText = "Access Granted";
-                button.style.background = "#00cc66"; // Verde éxito
-                button.classList.remove('loading');
-
-                // Resetea el botón después de 2 segundos
-                setTimeout(() => {
-                    button.disabled = false;
-                    button.innerText = "Authenticate";
-                    button.style.background = "#4d4dff"; // Color original
-                }, 2000);
+                // Cuando termina, añade el cursor parpadeante
+                title.style.borderRight = '2px solid #4d4dff';
+                title.classList.add('typing-done');
             }
-        }, 1000); // Tiempo por cada paso de "carga"
+        }
+        
+        typeWriter(); // Inicia la animación de escritura
+
+        // --- Animación 2: Estado de Carga del Botón ---
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // Previene el envío real para esta demo
+            
+            // Desactiva el botón y muestra "cargando"
+            button.disabled = true;
+            button.classList.add('loading');
+            
+            // Simulación de los pasos de una IA
+            let loadingStep = 0;
+            const steps = ["Analyzing...", "Verifying...", "Authenticating..."];
+            
+            const loadingInterval = setInterval(() => {
+                if (loadingStep < steps.length) {
+                    button.innerText = steps[loadingStep];
+                    loadingStep++;
+                } else {
+                    clearInterval(loadingInterval);
+                    
+                    // Simulación de éxito
+                    button.innerText = "Access Granted";
+                    button.style.background = "#00cc66"; // Verde éxito
+                    button.classList.remove('loading');
+
+                    // Resetea el botón después de 2 segundos
+                    setTimeout(() => {
+                        button.disabled = false;
+                        button.innerText = "Authenticate";
+                        button.style.background = "#4d4dff"; // Color original
+                    }, 2000);
+                }
+            }, 1000); // Tiempo por cada paso de "carga"
+        });
     });
-});
 </script>
