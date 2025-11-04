@@ -128,6 +128,9 @@ Este repositorio está organizado en tres ramas principales, cada una conteniend
     ```env
     # URL de tu base de datos en MongoDB Atlas
     MONGODB_URI="mongodb+srv://..."
+
+    # Nombre de tu base de datos en MongoDB Atlas
+    MONGO_DATABASE_NAME = "your database Name"
     
     # URL pública generada por Google Colab en el paso anterior
     COLAB_API_ENDPOINT="[http://XXXX.ngrok.io/reconocer](http://XXXX.ngrok.io/reconocer)"
@@ -146,30 +149,22 @@ Este repositorio está organizado en tres ramas principales, cada una conteniend
 ## 📚 Recursos y Enlaces de Interés
 
 * [Documentación oficial de Node.js](https://nodejs.org/)
-* Node.js Libraries: [axios]()
-* Node.js Libraries: [cookie-parser]()
-* Node.js Libraries: [cors]()
-* Node.js Libraries: [dotenv]()
-* Node.js Libraries: [ejs](https://www.npmjs.com/package/ejs)
-* Node.js Libraries: [express]()
-* Node.js Libraries: [jsonwebtoken]()
-* Node.js Libraries: [mongodb]()
-* Node.js Libraries: [sweetalert2]()
+* [Sitio web de Express.js](https://expressjs.com/)
 * [Página de MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 * [Tutoriales de Google Colab](https://colab.research.google.com/)
 * [Documentación de OpenCV](https://opencv.org/)
 * [Universidad Tecnologica de Nayarit](https://utnay.edu.mx/)
-* Inda Ceniceros Cesar Eduardo - [GitHub: @CeicGitHub](https://github.com/CeicGitHub)
+* [GitHub: @CeicGitHub - Inda Ceniceros Cesar Eduardo](https://github.com/CeicGitHub)
 
 ---
 
 ## 👨‍💻 Autores (Equipo 3)
 
 * **Bernal Loma Jose Angel** - [GitHub: @Fernangel7](https://github.com/Fernangel7)
-* **Castro Bañuelos Jocelyn Danae** - [GitHub: @(usuario-github)](https://github.com/usuario-github)
-* **Creano Rodriguez Donovan Joel** - [GitHub: @(usuario-github)](https://github.com/usuario-github)
-* **Duran Tapia Diego Alejandro** - [GitHub: @(usuario-github)](https://github.com/usuario-github)
-* **Godoy Romo Kevin Imanol** - [GitHub: @(usuario-github)](https://github.com/usuario-github)
+* **Castro Bañuelos Jocelyn Danae** - [GitHub: @JunneBa](https://github.com/JunneBa)
+* **Creano Rodriguez Donovan Joel** - [GitHub: @Eryr-svg](https://github.com/Eryr-svg)
+* **Duran Tapia Diego Alejandro** - [GitHub: @tdalejandro01](https://github.com/tdalejandro01)
+* **Godoy Romo Kevin Imanol** - [GitHub: @kevingodoy0](https://github.com/kevingodoy0)
 
 ---
 
