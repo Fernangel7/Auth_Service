@@ -1,1 +1,139 @@
-### ESP32_Cam Logic
+# 🤖 Detector Facial con IA y Caja Fuerte Conectada
+
+Este proyecto implementa un sistema de seguridad biométrico basado en **reconocimiento facial en la nube**. Controla una caja fuerte física usando un **ESP32-CAM**, un **servomotor** y una **pantalla OLED**.
+
+La lógica central es gestionada por una **aplicación web (Express.js)** que maneja usuarios, se conecta a una base de datos **MongoDB Atlas** y consume una **API de IA (Flask)** desplegada en **Google Colab** para el procesamiento de visión artificial.
+
+> [cite_start]**Propósito del Proyecto:** Desarrollar un detector de rostros que identifique y resalte la presencia de rostros humanos [cite: 29] [cite_start][...] usando herramientas de código libre [cite: 29] [cite_start][...] y como resultado esta caja se abrirá automáticamente[cite: 29].
+
+
+*(Demo del proyecto: Se muestra el ESP32, la app web y el desbloqueo del servo)*
+
+---
+
+## 🏛️ Arquitectura del Sistema y Flujo de Datos
+
+Este proyecto está desacoplado en tres componentes principales que se comunican por APIs.
+
+
+
+[Image of a system architecture diagram]
+
+
+### 1. Registro de Nuevo Usuario
+El registro se maneja a través de la aplicación web:
+1.  El usuario accede a la **Web App (Express.js)** y se registra en el formulario de login.
+2.  Se solicitan datos extensos para una identificación correcta.
+3.  Las imágenes de perfil/autenticación se suben a **Imgur** para evitar la saturación del servidor.
+4.  La **Web App** guarda la información del usuario (incluyendo las URLs de Imgur) en la base de datos **MongoDB Atlas**.
+
+### 2. Proceso de Autenticación (Desbloqueo)
+1.  **Captura (Hardware):** El **ESP32-CAM** detecta movimiento y captura una imagen del rostro.
+2.  **Petición (Hardware -> Web App):** El ESP32 envía la imagen a un endpoint específico de la **API interna** de la **Web App (Express.js)**.
+3.  **Orquestación (Web App -> IA):** La Web App recibe la imagen. A su vez, realiza una petición a la **API externa de IA (Flask)**, que está corriendo en **Google Colab**, enviándole la imagen a analizar.
+4.  **Análisis (IA):** La **API de Flask** en Colab (usando visión artificial) procesa la imagen, la compara con los datos de acceso (almacenados en **Google Drive**) y determina si el rostro está autorizado.
+5.  **Respuesta (IA -> Web App):** La API de Colab devuelve una respuesta (ej. `{"status": "concedido", "usuario": "Kevin"}`).
+6.  **Acción (Web App -> Hardware):** La Web App recibe la respuesta de la IA, registra el intento de acceso en **MongoDB Atlas**, y envía un comando final al **ESP32-CAM** (ej. "DESBLOQUEAR" o "DENEGADO").
+7.  **Ejecución (Hardware):** El **ESP32-CAM** recibe el comando, muestra el mensaje correspondiente en la **pantalla OLED** y (si el acceso fue concedido) activa el **servomotor** para abrir la cerradura.
+
+---
+
+## 🛠️ Stack de Tecnologías
+
+### Hardware
+* **Microcontrolador:** ESP32-CAM (Captura de video y conectividad Wi-Fi).
+* **Actuador:** Servomotor (Mecanismo de cerradura).
+* **Pantalla:** Pantalla OLED (Feedback visual de estado).
+
+### Aplicación Web (Backend Principal)
+* **Framework:** Express.js (Node.js)
+* **Base de Datos:** MongoDB Atlas (Almacenamiento de usuarios e intentos de acceso).
+* **Funcionalidad:**
+    * API interna para recibir peticiones del ESP32.
+    * API para consumir el modelo de IA.
+    * Sistema de login y gestión de usuarios.
+
+### Servicio de IA (Backend Secundario)
+* **Plataforma:** Google Colab (Hosting del modelo).
+* **Framework:** Flask (Python) (Para crear la API REST).
+* **IA / Visión Artificial:** OpenCV y Red Neuronal (Entrenada para reconocimiento facial).
+* **Almacenamiento de Datos:** Google Drive (Para los datos de entrenamiento y acceso del modelo).
+
+### Servicios Externos
+* **Imgur:** Hosting de imágenes de usuario para el registro.
+
+---
+
+## ✨ Características Principales
+
+* **Arquitectura de Microservicios:** Sistema desacoplado (Hardware, Web App, IA API) para mayor escalabilidad y mantenibilidad.
+* **IA en la Nube:** Uso de Google Colab para ejecutar la red neuronal, permitiendo análisis potentes sin sobrecargar el microcontrolador.
+* **Gestión de Usuarios:** Plataforma web completa con registro, login y base de datos en MongoDB Atlas.
+* **Almacenamiento Eficiente:** Uso de Imgur para las imágenes de usuario, evitando la saturación del almacenamiento local de la app web.
+* **Feedback Físico y Visual:** Respuesta instantánea al usuario mediante la pantalla OLED y el servomotor.
+
+---
+
+## 🔧 Instalación y Puesta en Marcha
+
+*(Esta es una guía de ejemplo. ¡Debes completarla con tus propios pasos!)*
+
+### 1. Hardware (ESP32-CAM)
+1.  Abre el código `.ino` (ubicado en la carpeta `/firmware`) con el IDE de Arduino o PlatformIO.
+2.  Instala las librerías necesarias (Ej. `Adafruit_SSD1306`, `ESP32Servo`, `ArduinoJson`).
+3.  Configura tus credenciales de Wi-Fi y el endpoint de tu API Express:
+    ```cpp
+    const char* ssid = "TU_WIFI";
+    const char* password = "TU_PASSWORD";
+    const char* api_endpoint = "http://TU_APP_[EXPRESS.com/api/autenticar](https://EXPRESS.com/api/autenticar)";
+    ```
+4.  Sube el firmware al ESP32-CAM.
+
+### 2. Backend (IA - Colab/Flask)
+1.  Abre el notebook de Google Colab (ubicado en `/IA-API`).
+2.  Monta tu Google Drive para que el script pueda acceder a los datos del modelo:
+    ```python
+    from google.colab import drive
+    drive.mount('/content/drive')
+    ```
+3.  Instala las dependencias de Python:
+    ```bash
+    !pip install Flask flask-ngrok opencv-python ...
+    ```
+4.  Ejecuta el script de Flask. Se generará una URL pública (usualmente con `ngrok`) que deberás usar en el siguiente paso.
+
+### 3. Backend (Web App - Express.js)
+1.  Navega a la carpeta `/webapp`.
+2.  Crea un archivo `.env` en la raíz de esta carpeta con las siguientes variables:
+    ```env
+    # URL de tu base de datos en MongoDB Atlas
+    MONGODB_URI="mongodb+srv://..."
+    
+    # URL pública generada por Google Colab en el paso anterior
+    COLAB_API_ENDPOINT="[http://XXXX.ngrok.io/reconocer](http://XXXX.ngrok.io/reconocer)"
+    
+    # Clave de API para subir imágenes a Imgur
+    IMGUR_CLIENT_ID="TU_CLIENT_ID_IMGUR"
+    
+    # Puerto para la app web
+    PORT=3000
+    ```
+3.  Instala las dependencias: `npm install`
+4.  Ejecuta el servidor: `npm start`
+
+---
+
+## 👨‍💻 Autores (Equipo 3)
+
+Este proyecto fue desarrollado por:
+* [cite_start]**Bernal Loma Jose Angel** [cite: 10, 22]
+* [cite_start]**Castro Bañuelos Jocelyn Danae** [cite: 11, 23]
+* [cite_start]**Creano Rodriguez Donovan Joel** [cite: 12, 23]
+* [cite_start]**Duran Tapia Diego Alejandro** [cite: 13, 23]
+* [cite_start]**Godoy Romo Kevin Imanol** [cite: 13, 24]
+
+---
+
+## 🎓 Agradecimientos
+
+[cite_start]Un agradecimiento especial a nuestro profesor **Inda Ceniceros Cesar Eduardo** [cite: 8] [cite_start]y a la **Universidad Tecnológica de Nayarit** [cite: 2, 3, 16, 17] por su guía y apoyo durante el desarrollo de este proyecto.
