@@ -1,10 +1,12 @@
 <style>
-        /* --- Configuración Global y Fondo --- */
+    /* --- Configuración Global y Fondo --- */
     body {
-        font-family: 'Exo 2', sans-serif; /* Fuente futurista/tech */
+        font-family: 'Exo 2', sans-serif;
+        /* Fuente futurista/tech */
         /* Gradiente radial fuerte con enfoque de IA */
         background: radial-gradient(ellipse at bottom, #0a051a 0%, #1a0a3a 50%, #2a0d5a 100%);
-        background-color: #0a051a; /* Fallback */
+        background-color: #0a051a;
+        /* Fallback */
         color: #f0f0f0;
         display: grid;
         place-items: center;
@@ -16,16 +18,18 @@
     /* --- Contenedor del Formulario (Efecto Vidrio) --- */
     .login-container {
         /* Efecto "Glassmorphism" */
-        background: rgba(15, 10, 30, 0.7); /* Morado muy oscuro y semi-transparente */
+        background: rgba(15, 10, 30, 0.7);
+        /* Morado muy oscuro y semi-transparente */
         backdrop-filter: blur(10px);
-        border: 1px solid #4d4dff; /* Borde azul brillante */
+        border: 1px solid #4d4dff;
+        /* Borde azul brillante */
         border-radius: 12px;
         padding: 2rem 3rem;
-        
+
         /* Sombra de neón azul */
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
-                    0 0 25px rgba(77, 77, 255, 0.6); 
-        
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
+            0 0 25px rgba(77, 77, 255, 0.6);
+
         /* Animación de entrada con CSS */
         animation: floatIn 1s ease-out;
     }
@@ -36,6 +40,7 @@
             opacity: 0;
             transform: translateY(50px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -48,7 +53,8 @@
         color: #f0f0f0;
         margin-bottom: 2.5rem;
         font-weight: 400;
-        min-height: 2rem; /* Espacio para el texto */
+        min-height: 2rem;
+        /* Espacio para el texto */
         /* El borde derecho simulará el cursor de escritura */
         border-right: 2px solid rgba(77, 77, 255, 0.75);
         display: inline-block;
@@ -62,8 +68,15 @@
     }
 
     @keyframes blink {
-        from, to { border-color: transparent }
-        50% { border-color: #4d4dff; }
+
+        from,
+        to {
+            border-color: transparent
+        }
+
+        50% {
+            border-color: #4d4dff;
+        }
     }
 
 
@@ -78,7 +91,8 @@
         padding: 10px 0;
         background: transparent;
         border: none;
-        border-bottom: 2px solid #6f00ff; /* Morado fuerte */
+        border-bottom: 2px solid #6f00ff;
+        /* Morado fuerte */
         color: white;
         font-family: 'Exo 2', sans-serif;
         font-size: 1rem;
@@ -97,11 +111,12 @@
     }
 
     /* Animación del label flotante */
-    .input-group input:focus + label,
-    .input-group input:valid + label {
+    .input-group input:focus+label,
+    .input-group input:valid+label {
         top: -15px;
         font-size: 0.8rem;
-        color: #4d4dff; /* Azul al enfocar */
+        color: #4d4dff;
+        /* Azul al enfocar */
     }
 
     /* Animación del borde del input */
@@ -116,7 +131,8 @@
         padding: 12px;
         border: none;
         border-radius: 5px;
-        background: #4d4dff; /* Azul fuerte */
+        background: #4d4dff;
+        /* Azul fuerte */
         color: white;
         font-size: 1.1rem;
         font-weight: 700;
@@ -126,7 +142,8 @@
     }
 
     button:hover {
-        background: #6f00ff; /* Morado fuerte al pasar el mouse */
+        background: #6f00ff;
+        /* Morado fuerte al pasar el mouse */
         box-shadow: 0 0 15px rgba(111, 0, 255, 0.8);
     }
 
@@ -139,16 +156,40 @@
         background: #555;
         cursor: wait;
     }
+
+    /* SweetAlert2 Styles */
+
+    .swal-title-custom {
+        color: #00ff66;
+        /* Verde brillante */
+        font-size: 26px;
+        /* Aumenta tamaño */
+        font-weight: bold;
+    }
+
+    .swal-text-custom {
+        color: #ffffff;
+        /* Texto blanco */
+        font-size: 20px;
+    }
 </style>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %>></title>
+    <title>
+        <%= title %>>
+    </title>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
     <input type="hidden" id="hidden_title" value="<%= title %>">
@@ -156,31 +197,33 @@
     <div class="login-container">
         <form id="login-form">
             <h2 id="form-title"></h2>
-            
+
             <div class="input-group">
                 <input type="text" id="username" required>
                 <label for="username">Agent ID</label>
             </div>
-            
+
             <div class="input-group">
                 <input type="password" id="password" required>
                 <label for="password">Access Key</label>
             </div>
-            
+
             <button type="submit" id="login-button">Authenticate</button>
         </form>
     </div>
 
 </body>
+
 </html>
 
 <script>
+    //const Swal = require('sweetalert2')
     document.addEventListener('DOMContentLoaded', () => {
 
         const form = document.getElementById('login-form');
         const button = document.getElementById('login-button');
         const title = document.getElementById('form-title');
-        
+
         // --- Animación 1: Título con "Efecto Máquina de Escribir" ---
         const h_title = document.getElementById('hidden_title').value
         const titleText = h_title;
@@ -198,41 +241,79 @@
                 title.classList.add('typing-done');
             }
         }
-        
+
         typeWriter(); // Inicia la animación de escritura
 
         // --- Animación 2: Estado de Carga del Botón ---
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault(); // Previene el envío real para esta demo
-            
+
+            const username = document.getElementById('username')
+            const password = document.getElementById('password')
+
             // Desactiva el botón y muestra "cargando"
             button.disabled = true;
             button.classList.add('loading');
-            
+
             // Simulación de los pasos de una IA
             let loadingStep = 0;
             const steps = ["Analyzing...", "Verifying...", "Authenticating..."];
-            
-            const loadingInterval = setInterval(() => {
-                if (loadingStep < steps.length) {
-                    button.innerText = steps[loadingStep];
-                    loadingStep++;
-                } else {
-                    clearInterval(loadingInterval);
-                    
-                    // Simulación de éxito
-                    button.innerText = "Access Granted";
-                    button.style.background = "#00cc66"; // Verde éxito
-                    button.classList.remove('loading');
 
-                    // Resetea el botón después de 2 segundos
-                    setTimeout(() => {
-                        button.disabled = false;
-                        button.innerText = "Authenticate";
-                        button.style.background = "#4d4dff"; // Color original
-                    }, 2000);
-                }
-            }, 1000); // Tiempo por cada paso de "carga"
+            const promises = await Promise.all([
+                new Promise((resolve) => {
+                    const loadingInterval = setInterval(() => {
+                        if (loadingStep < steps.length) {
+                            button.innerText = steps[loadingStep];
+                            loadingStep++;
+                        } else {
+                            resolve("Animation finished!")
+                            clearInterval(loadingInterval);
+                        }
+                    }, 1000)
+                }),
+                axios.get("/user/auth", {
+                    params: {
+                        agent_id: username ?? '',
+                        access_key: password ?? ''
+                    },
+                    timeout: 15000
+                })
+            ])
+
+            const [animation_result, auth_response] = promises
+
+            if (auth_response.status && auth_response.status == 200) {
+                button.innerText = "Access Granted";
+                button.style.background = "#00cc66"; // Verde éxito
+                button.classList.remove('loading');
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: true,
+                    focusConfirm: true,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    background: 'rgba(15, 10, 30, 0.7)',
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    },
+                    willClose: () => {
+                        window.location.href = "/dashboard"
+                    },
+                    customClass: {
+                        title: 'swal-title-custom',
+                        htmlContainer: 'swal-text-custom'
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Authentication Success",
+                    html: '<span>You have been redirected...</span>',
+                });
+            }
         });
     });
 </script>
