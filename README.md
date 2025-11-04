@@ -4,7 +4,7 @@ Este proyecto implementa un sistema de seguridad biométrico basado en **reconoc
 
 La lógica central es gestionada por una **aplicación web (Express.js)** que maneja usuarios, se conecta a una base de datos **MongoDB Atlas** y consume una **API de IA (Flask)** desplegada en **Google Colab** para el procesamiento de visión artificial.
 
-> [cite_start]**Propósito del Proyecto:** Desarrollar un detector de rostros que identifique y resalte la presencia de rostros humanos [cite: 29] [cite_start][...] usando herramientas de código libre [cite: 29] [cite_start][...] y como resultado esta caja se abrirá automáticamente[cite: 29].
+> **Propósito del Proyecto:** Desarrollar un detector de rostros que identifique y resalte la presencia de rostros humanos [...] usando herramientas de código libre [...] y como resultado esta caja se abrirá automáticamente.
 
 
 *(Demo del proyecto: Se muestra el ESP32, la app web y el desbloqueo del servo)*
@@ -126,14 +126,14 @@ El registro se maneja a través de la aplicación web:
 ## 👨‍💻 Autores (Equipo 3)
 
 Este proyecto fue desarrollado por:
-* [cite_start]**Bernal Loma Jose Angel** [cite: 10, 22]
-* [cite_start]**Castro Bañuelos Jocelyn Danae** [cite: 11, 23]
-* [cite_start]**Creano Rodriguez Donovan Joel** [cite: 12, 23]
-* [cite_start]**Duran Tapia Diego Alejandro** [cite: 13, 23]
-* [cite_start]**Godoy Romo Kevin Imanol** [cite: 13, 24]
+* **Bernal Loma Jose Angel**
+* **Castro Bañuelos Jocelyn Danae**
+* **Creano Rodriguez Donovan Joel**
+* **Duran Tapia Diego Alejandro**
+* **Godoy Romo Kevin Imanol**
 
 ---
 
 ## 🎓 Agradecimientos
 
-[cite_start]Un agradecimiento especial a nuestro profesor **Inda Ceniceros Cesar Eduardo** [cite: 8] [cite_start]y a la **Universidad Tecnológica de Nayarit** [cite: 2, 3, 16, 17] por su guía y apoyo durante el desarrollo de este proyecto.
+Un agradecimiento especial a nuestro profesor **Inda Ceniceros Cesar Eduardo** y a la **Universidad Tecnológica de Nayarit** por su guía y apoyo durante el desarrollo de este proyecto.
