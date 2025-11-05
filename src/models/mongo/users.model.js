@@ -3,12 +3,8 @@ require('dotenv').config()
 const crypto = require('node:crypto')
 
 const { getMongoDataBase } = require("../../db/mongo.db.js")
-const { MONGODB_URI, MONGO_DATABASE_NAME } = require("../../utils/env.utils.js")
-const { UUID } = require('mongodb')
 
-
-
-module.exports = class UsersModel {
+class user_model {
     static async createEmptyColeccionUsers(req, res) {
         try {
             const db = await getMongoDataBase()
@@ -73,7 +69,7 @@ module.exports = class UsersModel {
             await users.createIndex({ agent_id: 1 }, { name: 'idx_agent' });
             await users.createIndex({ access_key: 1 }, { unique: true, sparse: true, name: 'idx_access_key_unique' });
 
-            let responses =  [
+            let responses = [
                 { response: "✅ Database created successfully" }
             ]
 
@@ -89,14 +85,39 @@ module.exports = class UsersModel {
     static async auth_user(req, res) {
         try {
             const db = await getMongoDataBase()
+            const collection = db.collection("users")
+
+            const { agent_id, access_key } = req
+
+            const filter = {
+                agent_id: agent_id,
+                access_key: access_key
+            }
+
+            const result = await collection.find(filter).toArray()
+
+            // const asd = await collection.find({}).toArray()
+            // const asd = await collection.findOne({})
+
+            if (result.length == 1) {
+                return {
+                    status: 200,
+                    msg: "correct authentication..."
+                }
+            } else {
+                return {
+                    status: 401,
+                    msg: "incorrect authentication..."
+                }
+            }
 
             // const response = await db.collection("users").insertOne()
 
         } catch (err) {
-            console.log("❌ Error en el Query")
-            client.close()
-        } finally {
-            client.close()
+            return {
+                status: 204,
+                msg: "No Content..."
+            }
         }
     }
 
@@ -126,5 +147,11 @@ module.exports = class UsersModel {
         } catch (err) {
             return ({ response: "❌ Error on add an user on the Database" })
         }
+    }
+}
+
+module.exports = {
+    user_model: {
+        auth_user: user_model.auth_user
     }
 }

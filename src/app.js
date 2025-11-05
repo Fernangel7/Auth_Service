@@ -40,7 +40,7 @@ app.use(cookieParser(COOKIE_SECRET_KEY))
 
 //setting express routers
 app.use("/", main_router)
-app.use("/user", Unlogged, user_router)
+app.use("/user", user_router)
 
 // app.get("/db/in", async (req, res) => await UsersModel.createEmptyColeccionUsers(req, res))
 

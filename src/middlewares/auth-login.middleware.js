@@ -1,40 +1,48 @@
 const jwt = require('jsonwebtoken')
 const { JWT_SECRET_KEY } = require('../utils/env.utils.js')
 
-function Unlogged(req, res, next) {
-    const token = req.cookies.refeshToken
+function Unlogged(req, res, next) { //No logged
+    const token = req.signedCookies.refeshToken
 
     if (!token) {
         res.redirect('/auth')
     } else {
         try {
             if (!jwt.verify(token, JWT_SECRET_KEY)) {
-                res.redirect('/')
+                res.redirect('/auth')
             } else next()
         } catch (e) {
             res.clearCookie('refeshToken', {
-                sign: true,
+                signed: true,
                 httpOnly: true,
                 secure: true,
                 sameSite: 'Strict'
             })
 
-            res.redirect('/')
+            res.redirect('/auth')
         }
     }
 }
 
-function Logged(req, res, next) {
-    const token = req.cookies.refeshToken
+function Logged(req, res, next) { //Logged verify
+    const token = req.signedCookies.refeshToken
 
     if (token) {
         try {
-            if (jwt.verify(token, JWT_SECRET_KEY)) {
-                res.redirect('/dashboard')
-            } else next()
+            if (!jwt.verify(token, JWT_SECRET_KEY)) {
+                res.redirect('/auth')
+            } else {
+                const previousURL = req.get('Referer'); // obtiene la URL anterior
+                // console.log(previousURL)
+                if (previousURL) {
+                    res.redirect(previousURL);
+                } else {
+                    res.redirect('/'); // fallback por si no existe Referer
+                }
+            }
         } catch (e) {
             res.clearCookie('refeshToken', {
-                sign: true,
+                signed: true,
                 httpOnly: true,
                 secure: true,
                 sameSite: 'Strict'
