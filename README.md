@@ -27,7 +27,38 @@ Este proyecto está desacoplado en tres componentes principales que se comunican
 
 
 
-[Image of a system architecture diagram]
+```markdown
+`branch: app`
+Auth_Service/
+├── .gitignore
+├── LICENSE
+├── README.md
+├── package-lock.json
+├── package.json
+└── src/
+    ├── app.js
+    ├── controllers/
+    ├── db/
+    ├── middlewares/
+    ├── models/
+    ├── public/
+    ├── routes/
+    ├── schemas/
+    ├── utils/
+    └── views/
+
+`branch: embedded``
+Auth_Service/
+├── .gitignore
+├── LICENSE
+└── README.md
+
+`branch: nn_model``
+Auth_Service/
+├── .gitignore
+├── LICENSE
+└── README.md
+```
 
 
 ### 1. Registro de Nuevo Usuario
@@ -160,11 +191,11 @@ Este repositorio está organizado en tres ramas principales, cada una conteniend
 
 ## 👨‍💻 Autores (Equipo 3)
 
-* **Bernal Loma Jose Angel** - [GitHub: @Fernangel7](https://github.com/Fernangel7)
-* **Castro Bañuelos Jocelyn Danae** - [GitHub: @JunneBa](https://github.com/JunneBa)
-* **Creano Rodriguez Donovan Joel** - [GitHub: @Eryr-svg](https://github.com/Eryr-svg)
-* **Duran Tapia Diego Alejandro** - [GitHub: @tdalejandro01](https://github.com/tdalejandro01)
-* **Godoy Romo Kevin Imanol** - [GitHub: @kevingodoy0](https://github.com/kevingodoy0)
+* **Bernal Loma Jose Angel** (Creador) - [GitHub: @Fernangel7](https://github.com/Fernangel7)
+* **Castro Bañuelos Jocelyn Danae** (Colaborador) - [GitHub: @JunneBa](https://github.com/JunneBa)
+* **Creano Rodriguez Donovan Joel** (Colaborador) - [GitHub: @Eryr-svg](https://github.com/Eryr-svg)
+* **Duran Tapia Diego Alejandro** (Colaborador) - [GitHub: @tdalejandro01](https://github.com/tdalejandro01)
+* **Godoy Romo Kevin Imanol** (Colaborador) - [GitHub: @kevingodoy0](https://github.com/kevingodoy0)
 
 ---
 
